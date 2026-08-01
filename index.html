@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>For My Favorite Person ❤️</title>
+  <style>
+    :root {
+      --bg-color: #030712;
+      --card-bg: rgba(30, 41, 59, 0.4);
+      --accent-color: #ec4899;
+      --text-color: #f8fafc;
+      --subtext-color: #94a3b8;
+      --aura-color: rgba(236, 72, 153, 0);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    body.love-accepted {
+      transition: background-color 1s ease-out;
+      --aura-color: rgba(236, 72, 153, 0.1);
+      background-image: radial-gradient(circle, var(--aura-color) 0%, rgba(0,0,0,0) 70%);
+    }
+
+    /* Modal Overlay (The Question) */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(3, 7, 18, 0.98);
+      backdrop-filter: blur(15px);
+      z-index: 10000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    .modal-card {
+      background: rgba(30, 41, 59, 0.9);
+      border: 1px solid rgba(236, 72, 153, 0.5);
+      border-radius: 20px;
+      padding: 3rem;
+      text-align: center;
+      max-width: 450px;
+      width: 100%;
+      box-shadow: 0 10px 50px rgba(236, 72, 153, 0.3);
+      position: relative;
+      animation: modalSlideIn 0.6s ease-out;
+    }
+
+    .modal-card h2 {
+      font-size: 2.2rem;
+      margin-bottom: 2rem;
+      background: linear-gradient(to right, #f472b6, #db2777);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .button-group {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+      margin-top: 1.5rem;
+      min-height: 60px;
+      position: relative;
+    }
+
+    .btn-choice {
+      padding: 0.9rem 2.5rem;
+      font-size: 1.2rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-yes {
+      background: linear-gradient(135deg, #ec4899, #be185d);
+      color: white;
+      box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4);
+    }
+
+    .btn-yes:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 25px rgba(236, 72, 153, 0.7);
+    }
+
+    .btn-no {
+      background: #334155;
+      color: #94a3b8;
+      position: absolute;
+      transition: all 0.15s ease-out;
+      opacity: 0.8;
+    }
+
+    /* Floating Stickers */
+    .stickers-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .sticker {
+      position: absolute;
+      font-size: 2.5rem;
+      opacity: 0.3;
+      filter: blur(1px);
+    }
+
+    /* Heart Rain Effect */
+    .heart-fall {
+      position: fixed;
+      top: -50px;
+      pointer-events: none;
+      z-index: 9999;
+      animation: heartFall 4s linear forwards;
+    }
+
+    /* Main Content */
+    .container {
+      width: 100%;
+      max-width: 800px;
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 1.5s ease, transform 1s ease;
+    }
+
+    .container.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    header h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      background: linear-gradient(to right, #f472b6, #db2777);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 2.5rem;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+      transition: border-color 0.4s ease, transform 0.4s ease;
+      text-align: center;
+    }
+
+    .card:hover {
+      border-color: rgba(236, 72, 153, 0.4);
+    }
+
+    /* --- RING BOX SECTION --- */
+    .marry-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .box-container {
+      position: relative;
+      width: 140px;
+      height: 140px;
+      cursor: pointer;
+      margin: 2rem 0;
+      perspective: 1000px;
+    }
+
+    /* Velvet Cushion / Base */
+    .box-base {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 60px;
+      background: linear-gradient(145deg, #881337, #4c0519);
+      border-radius: 12px;
+      border: 2px solid #fb7185;
+      box-shadow: 0 10px 25px rgba(225, 29, 72, 0.5);
+    }
+
+    /* Box Lid */
+    .box-lid {
+      position: absolute;
+      top: 20px;
+      width: 100%;
+      height: 60px;
+      background: linear-gradient(145deg, #9f1239, #881337);
+      border-radius: 12px 12px 4px 4px;
+      border: 2px solid #fda4af;
+      transform-origin: bottom;
+      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 3;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .box-lid::after {
+      content: '🎁';
+      font-size: 1.8rem;
+      transition: opacity 0.3s;
+    }
+
+    /* Diamond Ring Inside */
+    .ring {
+      position: absolute;
+      top: 45px;
+      left: 50%;
+      transform: translateX(-50%) scale(0.4);
+      font-size: 4rem;
+      opacity: 0;
+      transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 2;
+      filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.9));
+    }
+
+    /* Open State Animations */
+    .box-container.open .box-lid {
+      transform: rotateX(-110deg) translateY(-20px);
+    }
+
+    .box-container.open .box-lid::after {
+      opacity: 0;
+    }
+
+    .box-container.open .ring {
+      opacity: 1;
+      transform: translateX(-50%) translateY(-65px) scale(1.2);
+    }
+
+    .proposal-text {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #f472b6;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.6s ease;
+      margin-top: 1rem;
+    }
+
+    .proposal-text.show {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    /* ANIMATIONS */
+    @keyframes modalSlideIn {
+      from { transform: translateY(-50px) scale(0.9); opacity: 0; }
+      to { transform: translateY(0) scale(1); opacity: 1; }
+    }
+
+    @keyframes heartFall {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(105vh) rotate(360deg); opacity: 0; }
+    }
+
+    @keyframes floatSticker {
+      0% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(10deg); }
+      100% { transform: translateY(0) rotate(0deg); }
+    }
+  </style>
+</head>
+<body id="body">
+
+  <!-- Landing Question Modal -->
+  <div class="modal-overlay" id="loveModal">
+    <div class="modal-card">
+      <h2>Do you love me? 💖</h2>
+      <div class="button-group" id="buttonArea">
+        <button class="btn-choice btn-yes" onclick="acceptLove()">Yes!</button>
+        <button class="btn-choice btn-no" id="noBtn" onmouseover="moveButton()" onclick="moveButton()" ontouchstart="moveButton()">No</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Background Romantic Stickers -->
+  <div class="stickers-container" id="stickersContainer"></div>
+
+  <header id="mainHeader" style="opacity: 0;">
+    <h1>For My Favorite Person ✨</h1>
+    <p style="color: var(--subtext-color);">Welcome to your special place on the web.</p>
+  </header>
+
+  <main class="container" id="mainContent">
+    <section class="card">
+      <h2 style="margin-bottom: 1rem; color: #f472b6;">Hey You 👋</h2>
+      <p style="line-height: 1.8; color: var(--subtext-color);">
+        I wanted to build something unique, dynamic, and unforgettable just for you. Thank you for bringing so much light and happiness into my life.
+      </p>
+    </section>
+
+    <!-- Marry Me Section -->
+    <section class="card marry-section">
+      <h2 style="color: #f472b6;">I Have a Surprise For You... 🎁</h2>
+      <p style="color: var(--subtext-color);">Click the velvet box to open it!</p>
+
+      <div class="box-container" id="ringBox" onclick="openBox()">
+        <div class="box-lid"></div>
+        <div class="ring">💍</div>
+        <div class="box-base"></div>
+      </div>
+
+      <div class="proposal-text" id="proposalText">
+        Will You Marry Me? 💖✨
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const noBtn = document.getElementById('noBtn');
+    const modal = document.getElementById('loveModal');
+    const mainHeader = document.getElementById('mainHeader');
+    const mainContent = document.getElementById('mainContent');
+    const body = document.getElementById('body');
+    const stickersContainer = document.getElementById('stickersContainer');
+
+    const stickers = ['💖', '🥰', '🌸', '🌹', '🐻', '✨', '💕', '👩‍❤️‍👨'];
+    const stickerCount = 15;
+
+    window.onload = () => {
+      noBtn.style.left = '60%';
+
+      for (let i = 0; i < stickerCount; i++) {
+        const span = document.createElement('span');
+        span.className = 'sticker';
+        span.innerText = stickers[Math.floor(Math.random() * stickers.length)];
+        span.style.left = `${Math.random() * 100}vw`;
+        span.style.top = `${Math.random() * 100}vh`;
+        span.style.animation = `floatSticker ${3 + Math.random() * 3}s ease-in-out infinite`;
+        span.style.animationDelay = `${Math.random() * 2}s`;
+        stickersContainer.appendChild(span);
+      }
+    };
+
+    function moveButton() {
+      const padding = 60;
+      const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - padding * 2) + padding;
+      const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - padding * 2) + padding;
+
+      noBtn.style.position = 'fixed';
+      noBtn.style.left = `${x}px`;
+      noBtn.style.top = `${y}px`;
+    }
+
+    function acceptLove() {
+      modal.style.opacity = '0';
+      modal.style.transition = 'opacity 0.6s ease';
+      setTimeout(() => { modal.style.display = 'none'; }, 600);
+
+      launchHeartRain(40);
+
+      setTimeout(() => {
+        body.classList.add('love-accepted');
+        mainHeader.style.opacity = '1';
+        mainHeader.style.transition = 'opacity 1s ease';
+        mainContent.classList.add('show');
+      }, 300);
+    }
+
+    function openBox() {
+      const ringBox = document.getElementById('ringBox');
+      const proposalText = document.getElementById('proposalText');
+
+      if (!ringBox.classList.contains('open')) {
+        ringBox.classList.add('open');
+        
+        // Show proposal text after lid opens
+        setTimeout(() => {
+          proposalText.classList.add('show');
+        }, 400);
+
+        // Extra heart celebration on ring reveal
+        launchHeartRain(60);
+      }
+    }
+
+    function launchHeartRain(count) {
+      const heartShapes = ['❤️', '💖', '💝', '💕', '✨', '💍'];
+
+      for (let i = 0; i < count; i++) {
+        setTimeout(() => {
+          const heart = document.createElement('div');
+          heart.className = 'heart-fall';
+          heart.innerText = heartShapes[Math.floor(Math.random() * heartShapes.length)];
+          heart.style.left = `${Math.random() * 100}vw`;
+          heart.style.fontSize = `${1 + Math.random() * 2}rem`;
+          heart.style.animationDuration = `${2 + Math.random() * 3}s`;
+          document.body.appendChild(heart);
+
+          setTimeout(() => { heart.remove(); }, 4000);
+        }, i * 40);
+      }
+    }
+  </script>
+</body>
+</html>
