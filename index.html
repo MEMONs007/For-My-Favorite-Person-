@@ -103,7 +103,7 @@
     }
 
     .btn-yes:hover {
-      transform: scale(1.1);
+      transform: scale(1.05);
       box-shadow: 0 6px 25px rgba(236, 72, 153, 0.7);
     }
 
@@ -134,7 +134,7 @@
       filter: blur(1px);
     }
 
-    /* Heart Rain Effect */
+    /* Falling Rain Effect */
     .heart-fall {
       position: fixed;
       top: -50px;
@@ -189,101 +189,103 @@
       border-color: rgba(236, 72, 153, 0.4);
     }
 
-    /* --- RING BOX SECTION --- */
-    .marry-section {
+    /* Flowers Section */
+    .flower-section {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 1.5rem;
+      gap: 1rem;
     }
 
-    .box-container {
+    .bouquet-wrapper {
       position: relative;
-      width: 140px;
-      height: 140px;
-      cursor: pointer;
-      margin: 2rem 0;
-      perspective: 1000px;
-    }
-
-    /* Velvet Cushion / Base */
-    .box-base {
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-      height: 60px;
-      background: linear-gradient(145deg, #881337, #4c0519);
-      border-radius: 12px;
-      border: 2px solid #fb7185;
-      box-shadow: 0 10px 25px rgba(225, 29, 72, 0.5);
-    }
-
-    /* Box Lid */
-    .box-lid {
-      position: absolute;
-      top: 20px;
-      width: 100%;
-      height: 60px;
-      background: linear-gradient(145deg, #9f1239, #881337);
-      border-radius: 12px 12px 4px 4px;
-      border: 2px solid #fda4af;
-      transform-origin: bottom;
-      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-      z-index: 3;
+      width: 220px;
+      height: 220px;
+      margin: 1.5rem 0;
       display: flex;
       justify-content: center;
       align-items: center;
     }
 
-    .box-lid::after {
-      content: '🎁';
-      font-size: 1.8rem;
-      transition: opacity 0.3s;
-    }
-
-    /* Diamond Ring Inside */
-    .ring {
-      position: absolute;
-      top: 45px;
-      left: 50%;
-      transform: translateX(-50%) scale(0.4);
-      font-size: 4rem;
+    .bouquet {
+      font-size: 7rem;
       opacity: 0;
-      transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      z-index: 2;
-      filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.9));
+      transform: scale(0.2) rotate(-15deg);
+      transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      filter: drop-shadow(0 10px 20px rgba(236, 72, 153, 0.4));
     }
 
-    /* Open State Animations */
-    .box-container.open .box-lid {
-      transform: rotateX(-110deg) translateY(-20px);
-    }
-
-    .box-container.open .box-lid::after {
-      opacity: 0;
-    }
-
-    .box-container.open .ring {
+    .bouquet.bloomed {
       opacity: 1;
-      transform: translateX(-50%) translateY(-65px) scale(1.2);
+      transform: scale(1) rotate(0deg);
     }
 
-    .proposal-text {
-      font-size: 1.8rem;
-      font-weight: 700;
+    /* Date Picker Section Styling */
+    .date-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      margin-top: 1.5rem;
+      text-align: left;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .form-group label {
       color: #f472b6;
-      opacity: 0;
-      transform: scale(0.8);
-      transition: all 0.6s ease;
-      margin-top: 1rem;
+      font-weight: 600;
+      font-size: 0.95rem;
     }
 
-    .proposal-text.show {
-      opacity: 1;
-      transform: scale(1);
+    .form-control {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(236, 72, 153, 0.3);
+      border-radius: 10px;
+      padding: 0.8rem 1rem;
+      color: #f8fafc;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.3s ease;
     }
 
-    /* ANIMATIONS */
+    .form-control:focus {
+      border-color: #ec4899;
+    }
+
+    .date-confirm-msg {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      border-radius: 10px;
+      background: rgba(236, 72, 153, 0.15);
+      border: 1px solid rgba(236, 72, 153, 0.4);
+      color: #f472b6;
+      font-weight: 600;
+      display: none;
+    }
+
+    /* Music Player Floating Control */
+    .music-control {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(30, 41, 59, 0.8);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(236, 72, 153, 0.4);
+      border-radius: 50px;
+      padding: 0.6rem 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      z-index: 9999;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    }
+
+    /* Animations */
     @keyframes modalSlideIn {
       from { transform: translateY(-50px) scale(0.9); opacity: 0; }
       to { transform: translateY(0) scale(1); opacity: 1; }
@@ -303,6 +305,17 @@
 </head>
 <body id="body">
 
+  <!-- Background Audio: The Weeknd - Die For You (Piano Cover) -->
+  <audio id="bgMusic" loop preload="auto">
+    <source src="The Weeknd - DIE FOR YOU (Lyrics).mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Audio Toggle Control -->
+  <div class="music-control" onclick="toggleMusic()">
+    <span id="musicIcon">🎵</span>
+    <span id="musicText" style="font-size: 0.85rem; color: #f472b6;">Play Music</span>
+  </div>
+
   <!-- Landing Question Modal -->
   <div class="modal-overlay" id="loveModal">
     <div class="modal-card">
@@ -318,37 +331,61 @@
   <div class="stickers-container" id="stickersContainer"></div>
 
   <header id="mainHeader" style="opacity: 0;">
-    <h1>For My Favorite Person ✨</h1>
-    <p style="color: var(--subtext-color);">Welcome to your special place on the web.</p>
+    <h1>Oyata Magen Mal 💐✨</h1>
+    <p style="color: var(--subtext-color);">Distance means so little when someone means so much.</p>
   </header>
 
   <main class="container" id="mainContent">
-    <section class="card">
-      <h2 style="margin-bottom: 1rem; color: #f472b6;">Hey You 👋</h2>
-      <p style="line-height: 1.8; color: var(--subtext-color);">
-        wifyyy💗 ,<br>
-        I wanted to write this just to tell you how glad I am that you came into my life. Getting to know you over these past few weeks has easily been the best part of my days.
-        Every time we talk or hang out, I find myself smiling long after you’re gone. 
-        I’m so excited about this new chapter with you and can't wait for all the moments, laughs, and memories we’re going to share together.
-         With love,
+
+    <!-- Flowers Section -->
+    <section class="card flower-section">
+      <h2 style="color: #f472b6;">Flowers Just For You 🌹</h2>
+      <p style="color: var(--subtext-color);">Since I can't hand them to you in person, here is a bouquet made for you:</p>
+
+      <div class="bouquet-wrapper">
+        <div class="bouquet" id="bouquet">💐</div>
+      </div>
+
+      <button class="btn-choice btn-yes" id="flowerBtn" onclick="bloomFlowers()">Unwrap Your Flowers 🌸</button>
+      <p id="flowerMsg" style="color: #f472b6; opacity: 0; transition: opacity 0.6s ease; margin-top: 0.5rem; font-style: italic;">
+        "A bouquet of endless love, delivered across the distance."
       </p>
     </section>
 
-    <!-- Marry Me Section -->
-    <section class="card marry-section">
-      <h2 style="color: #f472b6;">I Have a Surprise For You... 🎁</h2>
-      <p style="color: var(--subtext-color);">Click the velvet box to open it!</p>
+    <!-- Date Picker Section -->
+    <section class="card">
+      <h2 style="color: #f472b6; margin-bottom: 0.5rem;">Plan Our Next Date 🗓️✨</h2>
+      <p style="color: var(--subtext-color);">Pick a day when we finally get to hang out!</p>
 
-      <div class="box-container" id="ringBox" onclick="openBox()">
-        <div class="box-lid"></div>
-        <div class="ring">💍</div>
-        <div class="box-base"></div>
-      </div>
+      <form class="date-form" onsubmit="saveDate(event)">
+        <div class="form-group">
+          <label for="meetDate">Choose Date:</label>
+          <input type="date" id="meetDate" class="form-control" required>
+        </div>
 
-      <div class="proposal-text" id="proposalText">
-        Will You Marry Me? 💖✨
-      </div>
+        <div class="form-group">
+          <label for="meetTime">Choose Time:</label>
+          <input type="time" id="meetTime" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label for="meetActivity">What are we doing?</label>
+          <select id="meetActivity" class="form-control" required>
+            <option value="" disabled selected>Select a romantic plan...</option>
+            <option value="Dinner Date & Drinks 🍝🍷">Dinner Date & Drinks 🍝🍷</option>
+            <option value="Cozy Movie Night 🍿🎬">Cozy Movie 🍿🎬</option>
+            <option value="Sunset Walk & Coffee ☕🌅">Sunset Walk & Coffee ☕🌅</option>
+            <option value="Stargazing & Long Talks ✨🌌">Stargazing & Long Talks ✨🌌</option>
+            <option value="Surprise Me! 🎁💖">Surprise Me! 🎁💖</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn-choice btn-yes" style="margin-top: 1rem; width: 100%;">Lock In Our Date! 🗓️</button>
+      </form>
+
+      <div id="dateConfirmMsg" class="date-confirm-msg"></div>
     </section>
+
   </main>
 
   <script>
@@ -358,6 +395,7 @@
     const mainContent = document.getElementById('mainContent');
     const body = document.getElementById('body');
     const stickersContainer = document.getElementById('stickersContainer');
+    const bgMusic = document.getElementById('bgMusic');
 
     const stickers = ['💖', '🥰', '🌸', '🌹', '🐻', '✨', '💕', '👩‍❤️‍👨'];
     const stickerCount = 15;
@@ -392,7 +430,9 @@
       modal.style.transition = 'opacity 0.6s ease';
       setTimeout(() => { modal.style.display = 'none'; }, 600);
 
-      launchHeartRain(40);
+      playAudio();
+
+      launchRain(['❤️', '💖', '💝', '💕', '✨'], 40);
 
       setTimeout(() => {
         body.classList.add('love-accepted');
@@ -402,37 +442,74 @@
       }, 300);
     }
 
-    function openBox() {
-      const ringBox = document.getElementById('ringBox');
-      const proposalText = document.getElementById('proposalText');
+    function bloomFlowers() {
+      const bouquet = document.getElementById('bouquet');
+      const flowerBtn = document.getElementById('flowerBtn');
+      const flowerMsg = document.getElementById('flowerMsg');
 
-      if (!ringBox.classList.contains('open')) {
-        ringBox.classList.add('open');
-        
-        // Show proposal text after lid opens
-        setTimeout(() => {
-          proposalText.classList.add('show');
-        }, 400);
+      bouquet.classList.add('bloomed');
+      flowerMsg.style.opacity = '1';
+      flowerBtn.style.display = 'none';
 
-        // Extra heart celebration on ring reveal
-        launchHeartRain(60);
+      launchRain(['🌹', '🌸', '🌺', '🌷', '✨'], 50);
+    }
+
+    function saveDate(e) {
+      e.preventDefault();
+      const date = document.getElementById('meetDate').value;
+      const time = document.getElementById('meetTime').value;
+      const activity = document.getElementById('meetActivity').value;
+
+      const confirmMsg = document.getElementById('dateConfirmMsg');
+      confirmMsg.innerText = `It's a date! Sending the details to my phone... 🥰`;
+      confirmMsg.style.display = 'block';
+
+      launchRain(['🗓️', '💖', '✨', '🥂'], 50);
+
+      // REPLACE WITH YOUR PHONE NUMBER (e.g., "11234567890" with country code, no + or spaces)
+      const phoneNumber = "940782973621"; 
+      
+      const message = encodeURIComponent(`Hey! I locked in our date! 🗓️\n\n📅 Date: ${date}\n⏰ Time: ${time}\n✨ Activity: ${activity}`);
+
+      // Open WhatsApp with pre-filled message after 1.2 seconds
+      setTimeout(() => {
+        window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
+      }, 1200);
+    }
+
+    function playAudio() {
+      bgMusic.play().then(() => {
+        document.getElementById('musicIcon').innerText = '🔊';
+        document.getElementById('musicText').innerText = 'Die For You 🎶';
+      }).catch(() => {
+        // Fallback if browser blocked autoplay
+      });
+    }
+
+    function toggleMusic() {
+      if (bgMusic.paused) {
+        bgMusic.play();
+        document.getElementById('musicIcon').innerText = '🔊';
+        document.getElementById('musicText').innerText = 'Die For You 🎶';
+      } else {
+        bgMusic.pause();
+        document.getElementById('musicIcon').innerText = '🔈';
+        document.getElementById('musicText').innerText = 'Music Paused';
       }
     }
 
-    function launchHeartRain(count) {
-      const heartShapes = ['❤️', '💖', '💝', '💕', '✨', '💍'];
-
+    function launchRain(symbols, count) {
       for (let i = 0; i < count; i++) {
         setTimeout(() => {
-          const heart = document.createElement('div');
-          heart.className = 'heart-fall';
-          heart.innerText = heartShapes[Math.floor(Math.random() * heartShapes.length)];
-          heart.style.left = `${Math.random() * 100}vw`;
-          heart.style.fontSize = `${1 + Math.random() * 2}rem`;
-          heart.style.animationDuration = `${2 + Math.random() * 3}s`;
-          document.body.appendChild(heart);
+          const drop = document.createElement('div');
+          drop.className = 'heart-fall';
+          drop.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+          drop.style.left = `${Math.random() * 100}vw`;
+          drop.style.fontSize = `${1 + Math.random() * 2}rem`;
+          drop.style.animationDuration = `${2 + Math.random() * 3}s`;
+          document.body.appendChild(drop);
 
-          setTimeout(() => { heart.remove(); }, 4000);
+          setTimeout(() => { drop.remove(); }, 4000);
         }, i * 40);
       }
     }
